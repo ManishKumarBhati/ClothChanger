@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.bmk.daggerproject.api.ApiServiceInterface
 import com.bmk.daggerproject.data.MatchRepositoryImpl
 import com.bmk.daggerproject.data.db.MatchDataBase
+import com.bmk.daggerproject.data.utils.HeaderInterceptor
 import com.bmk.daggerproject.domain.MatchRepository
 import com.bmk.daggerproject.util.Constants
 import com.google.gson.Gson
@@ -41,8 +42,12 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideOkHttpClient(logger: HttpLoggingInterceptor): OkHttpClient {
+    fun provideOkHttpClient(
+        logger: HttpLoggingInterceptor,
+        headerInterceptor: HeaderInterceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(headerInterceptor)
             .addInterceptor(logger)
             .build()
     }
