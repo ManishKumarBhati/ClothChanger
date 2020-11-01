@@ -77,7 +77,6 @@ ext.deps = [
                 'dataBinding': "com.xwray:groupie-databinding:${versions.groupie}"
         ],
         'gson'       : "com.google.code.gson:gson:${versions.gson}",
-        'picasso'    : 'com.squareup.picasso:picasso:2.71828',
         'retrofit'   : [
                 'core'  : "com.squareup.retrofit2:retrofit:${versions.retrofit}",
                 'mock'  : "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}",
@@ -108,6 +107,9 @@ ext.deps = [
         'stetho'     : [
                 'core'  : "com.facebook.stetho:stetho:${versions.stetho}",
                 'okHttp': "com.facebook.stetho:stetho-okhttp3:${versions.stetho}"
+        ], 'glide'     : [
+                'core'  : "com.github.bumptech.glide:glide:4.11.0",
+                'compiler': "com.github.bumptech.glide:compiler:4.11.0"
         ],
         'brotli'     : "org.brotli:dec:0.1.2",
         'kotlin'     : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}",

@@ -2,14 +2,15 @@ package com.bmk.daggerproject.util
 
 import android.widget.ImageView
 import com.bmk.daggerproject.R
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 
-fun ImageView.setImage(url: String) {
-    Picasso.get()
+fun ImageView.setGlideImage(url: String) {
+    Glide
+        .with(this)
         .load(url)
-        .centerCrop()
-        .resize(70, 70)
-        .placeholder(R.drawable.ic_image)
+        .thumbnail(0.1f)
         .error(R.drawable.ic_image)
+        .centerCrop()
+        .placeholder(R.drawable.ic_image)
         .into(this)
 }

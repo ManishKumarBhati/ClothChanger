@@ -59,8 +59,11 @@ dependencies {
     implementation deps.rx.kotlin
     implementation deps.rx.relay
     implementation deps.rx.android
+
+    implementation deps.glide.core
+    kapt deps.glide.compiler
+
     implementation deps.viewPager
-    implementation deps.picasso
 
     implementation deps.androidx.appcompat
     implementation deps.androidx.fragment
