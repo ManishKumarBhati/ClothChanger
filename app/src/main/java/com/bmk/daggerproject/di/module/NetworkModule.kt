@@ -18,7 +18,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 import javax.inject.Singleton
 
@@ -56,7 +56,8 @@ class NetworkModule {
     fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(ScalarsConverterFactory.create())
+//            .addConverterFactory(ScalarsConverterFactory.create()) this need to add when we dont wants to parse gson data
+            .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(Constants.BASE_URL)
             .client(client)
             .build()

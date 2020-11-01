@@ -8,7 +8,4 @@ import dagger.Module
 public abstract class ActivityModule() {
     @Binds
     abstract fun provideAppCompatActivity(activity: MainActivity): AppCompatActivity
-
-    @Binds
-    abstract fun provideMainActivity(activity: MainActivity): MainContract
 }

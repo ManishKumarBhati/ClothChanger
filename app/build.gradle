@@ -60,6 +60,7 @@ dependencies {
     implementation deps.rx.relay
     implementation deps.rx.android
     implementation deps.viewPager
+    implementation deps.picasso
 
     implementation deps.androidx.appcompat
     implementation deps.androidx.fragment

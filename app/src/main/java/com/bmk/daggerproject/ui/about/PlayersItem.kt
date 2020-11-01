@@ -1,34 +1,19 @@
 package com.bmk.daggerproject.ui.about
 
-import android.graphics.Typeface
-import androidx.core.content.ContextCompat
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.ItemPlayersBinding
-import com.bmk.daggerproject.domain.PlayersInfo
+import com.bmk.daggerproject.domain.ResponseData
+import com.bmk.daggerproject.util.setImage
 import com.xwray.groupie.databinding.BindableItem
 
-class PlayersItem(val data: PlayersInfo) : BindableItem<ItemPlayersBinding>() {
+class PlayersItem(val data: ResponseData) : BindableItem<ItemPlayersBinding>() {
     override fun getLayout(): Int {
         return R.layout.item_players
     }
 
     override fun bind(viewBinding: ItemPlayersBinding, position: Int) {
         viewBinding.apply {
-            tvName.apply {
-                text = "${data.nameFull}"
-                setTextColor(ContextCompat.getColor(root.context, R.color.black))
-                typeface = Typeface.DEFAULT_BOLD
-            }
-
-            data.Iscaptain?.let {
-                tvName.text = "${data.nameFull} (c)"
-                root.setBackgroundColor(
-                    ContextCompat.getColor(
-                        root.context,
-                        R.color.colorAccent
-                    )
-                )
-            }
+            data.imgUrl?.let { ivImg.setImage(it) }
         }
     }
 }

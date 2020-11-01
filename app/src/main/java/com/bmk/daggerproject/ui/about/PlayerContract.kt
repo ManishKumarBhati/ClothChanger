@@ -1,5 +1,6 @@
 package com.bmk.daggerproject.ui.about
 
+import com.bmk.daggerproject.domain.ResponseData
 import com.bmk.daggerproject.ui.base.BaseContract
 
 /**
@@ -7,6 +8,6 @@ import com.bmk.daggerproject.ui.base.BaseContract
  */
 interface PlayerContract : BaseContract.View {
     fun showProgress(show: Boolean)
-    fun loadMessageSuccess(data: Pair<String, String>)
+    fun render(data: List<ResponseData>)
     fun showErrorMessage(error: String?)
 }

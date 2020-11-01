@@ -13,26 +13,21 @@ import javax.inject.Inject
  */
 class PlayerPresenter @Inject constructor(
     view: PlayerContract,
-    val teamName: String?,
     val repository: MatchRepository
 ) :
     BasePresenter<PlayerContract>(view) {
     override fun start() {
-        loadMessage()
-    }
-
-    fun loadMessage() {
-        // Wait for a moment
-        repository.getTeam()
-            .filter { teamName != null }
+        repository.getMatchData()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
                 view.showProgress(false)
-                view.loadMessageSuccess(response to teamName!!)
+                view.render(response)
             }, { error ->
                 view.showProgress(false)
                 view.showErrorMessage(error.localizedMessage)
             }).addTo(disposable)
     }
+
+
 }
