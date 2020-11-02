@@ -8,10 +8,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentABinding
 import com.bmk.daggerproject.domain.ResponseData
+import com.bmk.daggerproject.ui.b.BFragment
+import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.CommonFragment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 
@@ -21,6 +25,7 @@ class AFragment : CommonFragment(), AContract {
     lateinit var presenter: APresenter
     lateinit var section: Section
     lateinit var binding: FragmentABinding
+    val subject = PublishSubject.create<String>()
     override fun getLayout() = R.layout.fragment_a
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,16 +47,39 @@ class AFragment : CommonFragment(), AContract {
         binding.progressBar.isVisible = show
     }
 
+    override fun showErrorMessage(error: String?) {
+        Log.e("Error", error)
+    }
+
     override fun render(data: List<ResponseData>) {
         section.update(emptyList())
 
-        val item = data.filter { it.imgUrl != null }.map { AItem(it) }
+        val item = data.filter { it.imgUrl != null }.map { AItem(it, subject) }
         section.update(item)
 
     }
 
-    override fun showErrorMessage(error: String?) {
-        Log.e("Error", error)
+    override fun navigateToDetail(id: String) {
+        activity?.let {
+            if (it.supportFragmentManager.findFragmentByTag(BFragment.TAG) == null) {
+                it.supportFragmentManager.beginTransaction()
+                    .addToBackStack(null)
+                    .setCustomAnimations(
+                        MainActivity.AnimType.FADE.getAnimPair().first,
+                        MainActivity.AnimType.FADE.getAnimPair().second
+                    )
+                    .replace(
+                        R.id.frame,
+                        BFragment.newInstance(id),
+                        BFragment.TAG
+                    )
+                    .commit()
+            }
+        }
+    }
+
+    override fun onImageClick(): Observable<String> {
+        return subject
     }
 
 

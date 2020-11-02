@@ -1,4 +1,4 @@
-package com.bmk.daggerproject.ui.about
+package com.bmk.daggerproject.ui.b
 
 import com.bmk.daggerproject.domain.MatchRepository
 import com.bmk.daggerproject.ui.base.BasePresenter
@@ -7,13 +7,14 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-
-class APresenter @Inject constructor(
-    view: AContract,
+class BPresenter @Inject constructor(
+    view: BView,
+    private val id: String?,
     private val repository: MatchRepository
-) : BasePresenter<AContract>(view) {
+
+) : BasePresenter<BView>(view) {
     override fun start() {
-        repository.getMatchData()
+        if (id != null) repository.getData(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ response ->
@@ -23,9 +24,5 @@ class APresenter @Inject constructor(
                 view.showProgress(false)
                 view.showErrorMessage(error.localizedMessage)
             }).addTo(disposable)
-
-        view.onImageClick()
-            .subscribe()
-            .addTo(disposable)
     }
 }

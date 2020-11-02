@@ -3,10 +3,10 @@ package com.bmk.daggerproject.data
 import com.bmk.daggerproject.api.ApiServiceInterface
 import com.bmk.daggerproject.data.db.MatchData
 import com.bmk.daggerproject.data.db.MatchDataBase
+import com.bmk.daggerproject.domain.DetailsData
 import com.bmk.daggerproject.domain.MatchRepository
 import com.bmk.daggerproject.domain.ResponseData
 import io.reactivex.Observable
-import io.reactivex.Single
 import javax.inject.Inject
 
 class MatchRepositoryImpl @Inject constructor(
@@ -25,18 +25,26 @@ class MatchRepositoryImpl @Inject constructor(
 
                 )
             }
+                .filter { it.imgUrl != null }
+        }.doOnNext(this::addMatchData)
+
+    }
+
+    private fun addMatchData(response: List<ResponseData>) {
+        val data = response.map {
+            MatchData(id = it.id, title = it.title, imgUrl = it.imgUrl!!)
         }
+        db.matchDOA().insertAll(data)
     }
 
-    override fun getTeam(): Single<String> {
-        return getMatchLocalData()
-    }
-
-    private fun addMatchData(data: String) {
-        db.matchDOA().insertAll(MatchData(data))
-    }
-
-    private fun getMatchLocalData(): Single<String> {
-        return db.matchDOA().getAlData()
+    override fun getData(id: String): Observable<DetailsData> {
+        return db.matchDOA().getData(id).map {
+            DetailsData(
+                id = it.id,
+                title = it.title,
+                imgUrl = it.imgUrl,
+                comment = it.comment
+            )
+        }
     }
 }

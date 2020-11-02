@@ -68,10 +68,9 @@ ext.deps = [
                 'core'           : "com.google.dagger:dagger:${versions.dagger}",
                 'compiler'       : "com.google.dagger:dagger-compiler:${versions.dagger}",
                 'android'        : "com.google.dagger:dagger-android-support:${versions.dagger}",
-                'androidCompiler': "com.google.dagger:dagger-android-processor:${versions.dagger}"
-        ],
+                'androidCompiler': "com.google.dagger:dagger-android-processor:${versions.dagger}"],
         'timber'     : "com.jakewharton.timber:timber:${versions.timber}",
-        'viewPager'     : "androidx.viewpager2:viewpager2:1.0.0",
+        'viewPager'  : "androidx.viewpager2:viewpager2:1.0.0",
         'groupie'    : [
                 'core'       : "com.xwray:groupie:${versions.groupie}",
                 'dataBinding': "com.xwray:groupie-databinding:${versions.groupie}"
@@ -82,35 +81,30 @@ ext.deps = [
                 'mock'  : "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}",
                 'gson'  : "com.squareup.retrofit2:converter-gson:${versions.retrofit}",
                 'rxJava': "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}",
-                'scalar': "com.squareup.retrofit2:converter-scalars:${versions.retrofit}"
-        ],
+                'scalar': "com.squareup.retrofit2:converter-scalars:${versions.retrofit}"],
         'rx'         : [
                 'java'       : "io.reactivex.rxjava2:rxjava:2.2.10",
                 'kotlin'     : "io.reactivex.rxjava2:rxkotlin:2.3.0",
                 'android'    : "io.reactivex.rxjava2:rxandroid:2.1.1",
                 'relay'      : "com.jakewharton.rxrelay2:rxrelay:2.1.0",
-                'preferences': "com.f2prateek.rx.preferences2:rx-preferences:2.0.0"
-        ],
+                'preferences': "com.f2prateek.rx.preferences2:rx-preferences:2.0.0"],
         'rxBinding'  : [
                 'platform'    : "com.jakewharton.rxbinding3:rxbinding:${versions.rxBinding}",
                 'core'        : "com.jakewharton.rxbinding3:rxbinding-core:${versions.rxBinding}",
                 'swiperefresh': "com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:${versions.rxBinding}",
                 'viewpager'   : "com.jakewharton.rxbinding3:rxbinding-viewpager:${versions.rxBinding}",
                 'appcompat'   : "com.jakewharton.rxbinding3:rxbinding-appcompat:${versions.rxBinding}",
-                'material'    : "com.jakewharton.rxbinding3:rxbinding-material:${versions.rxBinding}"
-        ],
+                'material'    : "com.jakewharton.rxbinding3:rxbinding-material:${versions.rxBinding}"],
         'okhttp'     : [
                 'okio'  : "com.squareup.okio:okio:${versions.okIo}",
                 'core'  : "com.squareup.okhttp3:okhttp:${versions.okHttp}",
-                'logger': "com.squareup.okhttp3:logging-interceptor:${versions.okHttp}"
-        ],
+                'logger': "com.squareup.okhttp3:logging-interceptor:${versions.okHttp}"],
         'stetho'     : [
                 'core'  : "com.facebook.stetho:stetho:${versions.stetho}",
-                'okHttp': "com.facebook.stetho:stetho-okhttp3:${versions.stetho}"
-        ], 'glide'     : [
-                'core'  : "com.github.bumptech.glide:glide:4.11.0",
-                'compiler': "com.github.bumptech.glide:compiler:4.11.0"
-        ],
+                'okHttp': "com.facebook.stetho:stetho-okhttp3:${versions.stetho}"],
+        'glide'      : [
+                'core'    : "com.github.bumptech.glide:glide:4.11.0",
+                'compiler': "com.github.bumptech.glide:compiler:4.11.0"],
         'brotli'     : "org.brotli:dec:0.1.2",
         'kotlin'     : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}",
         'dataBinding': "androidx.databinding:databinding-compiler:$android_plugin_version",
@@ -119,8 +113,7 @@ ext.deps = [
         'room'       : [
                 'runtime' : "androidx.room:room-runtime:${versions.room}",
                 'compiler': "androidx.room:room-compiler:${versions.room}",
-                'rx'      : "androidx.room:room-rxjava2:${versions.room}"
-        ],]
+                'rx'      : "androidx.room:room-rxjava2:${versions.room}"]]
 
 allprojects {
     repositories {
