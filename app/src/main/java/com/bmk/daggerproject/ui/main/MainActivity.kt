@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.ActivityMainBinding
-import com.bmk.daggerproject.ui.about.PlayerFragment
+import com.bmk.daggerproject.ui.about.AFragment
 import dagger.android.support.DaggerAppCompatActivity
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -22,7 +22,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 AnimType.SLIDE.getAnimPair().first,
                 AnimType.SLIDE.getAnimPair().second
             )
-            .replace(R.id.frame, PlayerFragment.newInstance(), PlayerFragment.TAG)
+            .replace(R.id.frame, AFragment.newInstance(), AFragment.TAG)
             .commit()
     }
 

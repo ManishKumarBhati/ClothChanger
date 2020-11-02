@@ -4,10 +4,10 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-public class PlayerModule {
+public class AModule {
 
     @Provides
-    fun provideAboutFragment(fragment: PlayerFragment): PlayerContract {
+    fun provideAFragment(fragment: AFragment): AContract {
         return fragment
     }
 }

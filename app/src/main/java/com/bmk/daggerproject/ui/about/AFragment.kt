@@ -6,7 +6,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bmk.daggerproject.R
-import com.bmk.daggerproject.databinding.FragmentPlayerBinding
+import com.bmk.daggerproject.databinding.FragmentABinding
 import com.bmk.daggerproject.domain.ResponseData
 import com.bmk.daggerproject.util.CommonFragment
 import com.xwray.groupie.GroupAdapter
@@ -15,17 +15,17 @@ import com.xwray.groupie.ViewHolder
 import javax.inject.Inject
 
 
-class PlayerFragment : CommonFragment(), PlayerContract {
+class AFragment : CommonFragment(), AContract {
 
     @Inject
-    lateinit var presenter: PlayerPresenter
+    lateinit var presenter: APresenter
     lateinit var section: Section
-    lateinit var binding: FragmentPlayerBinding
-    override fun getLayout() = R.layout.fragment_player
+    lateinit var binding: FragmentABinding
+    override fun getLayout() = R.layout.fragment_a
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentPlayerBinding.bind(view)
+        binding = FragmentABinding.bind(view)
         presenter.start()
         initView()
     }
@@ -45,7 +45,7 @@ class PlayerFragment : CommonFragment(), PlayerContract {
     override fun render(data: List<ResponseData>) {
         section.update(emptyList())
 
-        val item = data.filter { it.imgUrl != null }.map { PlayersItem(it) }
+        val item = data.filter { it.imgUrl != null }.map { AItem(it) }
         section.update(item)
 
     }
@@ -62,8 +62,8 @@ class PlayerFragment : CommonFragment(), PlayerContract {
 
     companion object {
         val TAG: String = "AFragment"
-        fun newInstance(): PlayerFragment {
-            return PlayerFragment()
+        fun newInstance(): AFragment {
+            return AFragment()
         }
     }
 }

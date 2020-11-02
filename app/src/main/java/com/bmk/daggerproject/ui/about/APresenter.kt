@@ -8,14 +8,11 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
-/**
- * Created by manish on 07/07/201820.
- */
-class PlayerPresenter @Inject constructor(
-    view: PlayerContract,
-    val repository: MatchRepository
+class APresenter @Inject constructor(
+    view: AContract,
+    private val repository: MatchRepository
 ) :
-    BasePresenter<PlayerContract>(view) {
+    BasePresenter<AContract>(view) {
     override fun start() {
         repository.getMatchData()
             .subscribeOn(Schedulers.io())
@@ -28,6 +25,4 @@ class PlayerPresenter @Inject constructor(
                 view.showErrorMessage(error.localizedMessage)
             }).addTo(disposable)
     }
-
-
 }
