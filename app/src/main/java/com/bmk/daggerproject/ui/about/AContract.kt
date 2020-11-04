@@ -9,6 +9,9 @@ import io.reactivex.Observable
  */
 interface AContract : BaseView {
     fun onImageClick(): Observable<String>
+    fun getSearchText(): String
+    fun onQueryTextChanged(): Observable<CharSequence>
+
     fun render(data: List<ResponseData>)
     fun navigateToDetail(id: String)
 }

@@ -16,8 +16,12 @@ class MatchRepositoryImpl @Inject constructor(
 ) :
     MatchRepository {
     override fun getMatchData(): Observable<List<ResponseData>> {
-        return api.getPostList("shapes").map { res ->
-            res.data.filter { it.images != null }.mapNotNull {
+        return getMatchData("shape")
+    }
+
+    override fun getMatchData(query: String): Observable<List<ResponseData>> {
+        return api.getPostList(query).map { res ->
+            res.data.filter { it.images != null }.map {
                 val img = it.images!!.firstOrNull()
                 ResponseData(
                     id = it.id,
@@ -28,7 +32,6 @@ class MatchRepositoryImpl @Inject constructor(
             }
                 .filter { it.imgUrl != null }
         }.doOnNext(this::addMatchData)
-
     }
 
     private fun addMatchData(response: List<ResponseData>) {

@@ -11,6 +11,7 @@ import com.bmk.daggerproject.domain.ResponseData
 import com.bmk.daggerproject.ui.b.BFragment
 import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.CommonFragment
+import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
@@ -49,6 +50,14 @@ class AFragment : CommonFragment(), AContract {
 
     override fun showErrorMessage(error: String?) {
         Log.e("Error", error)
+    }
+
+    override fun getSearchText(): String {
+        return binding.svQuery.query.toString().trim()
+    }
+
+    override fun onQueryTextChanged(): Observable<CharSequence> {
+        return binding.svQuery.queryTextChanges()
     }
 
     override fun render(data: List<ResponseData>) {
