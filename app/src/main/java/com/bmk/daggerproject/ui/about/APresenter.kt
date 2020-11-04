@@ -25,7 +25,7 @@ class APresenter @Inject constructor(
             }).addTo(disposable)
 
         view.onImageClick()
-            .subscribe()
+            .subscribe(view::navigateToDetail)
             .addTo(disposable)
     }
 }

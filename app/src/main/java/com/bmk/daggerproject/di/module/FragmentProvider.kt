@@ -2,15 +2,17 @@ package com.bmk.daggerproject.di.module
 
 import com.bmk.daggerproject.ui.about.AFragment
 import com.bmk.daggerproject.ui.about.AModule
+import com.bmk.daggerproject.ui.b.BFragment
+import com.bmk.daggerproject.ui.b.BModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
-/**
- * Created by manish on 07/07/201820.
- */
 @Module
 abstract class FragmentProvider {
     @ContributesAndroidInjector(modules = [AModule::class])
-    abstract fun providesPlayerFragment(): AFragment
+    abstract fun providesAFragment(): AFragment
+
+    @ContributesAndroidInjector(modules = [BModule::class])
+    abstract fun providesBFragment(): BFragment
 
 }

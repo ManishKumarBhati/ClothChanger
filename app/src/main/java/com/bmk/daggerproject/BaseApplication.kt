@@ -2,12 +2,11 @@ package com.bmk.daggerproject
 
 import com.bmk.daggerproject.di.component.ApplicationComponent
 import com.bmk.daggerproject.di.component.DaggerApplicationComponent
+import com.facebook.stetho.Stetho
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 
-/**
- * Created by manish on 07/07/201820.
- */
+
 class BaseApplication : DaggerApplication() {
 
     lateinit var component: ApplicationComponent
@@ -15,6 +14,9 @@ class BaseApplication : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this)
+        }
     }
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {

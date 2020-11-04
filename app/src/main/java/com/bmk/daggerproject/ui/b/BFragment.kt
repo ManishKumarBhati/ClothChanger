@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentBBinding
 import com.bmk.daggerproject.domain.DetailsData
-import com.bmk.daggerproject.ui.about.AFragment
 import com.bmk.daggerproject.util.CommonFragment
 import com.bmk.daggerproject.util.setGlideImage
 import com.jakewharton.rxbinding3.view.clicks
@@ -55,8 +54,8 @@ class BFragment : CommonFragment(), BView {
     companion object {
         val TAG: String = "BFragment"
         val ARGS_ID: String = "args id"
-        fun newInstance(id: String): AFragment {
-            return AFragment().apply {
+        fun newInstance(id: String): BFragment {
+            return BFragment().apply {
                 arguments = bundleOf(ARGS_ID to id)
             }
         }

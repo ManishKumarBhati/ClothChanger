@@ -71,6 +71,8 @@ dependencies {
     implementation deps.androidx.material
     implementation deps.androidx.recyclerview
     implementation deps.androidx.constraintlayout
+    debugImplementation deps.stetho.core
+    debugImplementation deps.stetho.okHttp
 
     implementation deps.kotlin
     implementation deps.ktx.core

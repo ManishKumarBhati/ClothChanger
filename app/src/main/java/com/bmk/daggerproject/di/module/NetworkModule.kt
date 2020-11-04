@@ -9,6 +9,7 @@ import com.bmk.daggerproject.data.db.MatchDataBase
 import com.bmk.daggerproject.data.utils.HeaderInterceptor
 import com.bmk.daggerproject.domain.MatchRepository
 import com.bmk.daggerproject.util.Constants
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.internal.bind.DateTypeAdapter
@@ -42,12 +43,19 @@ class NetworkModule {
     }
 
     @Provides
+    fun provideStethoInterceptor(): StethoInterceptor {
+        return StethoInterceptor()
+    }
+
+    @Provides
     fun provideOkHttpClient(
         logger: HttpLoggingInterceptor,
-        headerInterceptor: HeaderInterceptor
+        headerInterceptor: HeaderInterceptor,
+        stethoInterceptor: StethoInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(headerInterceptor)
+            .addInterceptor(stethoInterceptor)
             .addInterceptor(logger)
             .build()
     }

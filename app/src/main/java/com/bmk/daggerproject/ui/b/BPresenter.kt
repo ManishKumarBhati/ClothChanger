@@ -1,5 +1,6 @@
 package com.bmk.daggerproject.ui.b
 
+import android.util.Log
 import com.bmk.daggerproject.domain.MatchRepository
 import com.bmk.daggerproject.ui.base.BasePresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,5 +25,25 @@ class BPresenter @Inject constructor(
                 view.showProgress(false)
                 view.showErrorMessage(error.localizedMessage)
             }).addTo(disposable)
+
+        view.onSubmitClick()
+            .map { view.getComment() }
+            .filter { id != null }
+
+            .switchMap {
+                repository.saveComment(id = id!!, comment = it)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .toObservable()
+            }
+            .subscribe({ response ->
+                view.showProgress(false)
+                Log.d("bmk ", "save comment $response")
+            }, { error ->
+                view.showProgress(false)
+                view.showErrorMessage(error.localizedMessage)
+            }).addTo(disposable)
     }
+
+
 }

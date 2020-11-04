@@ -7,6 +7,7 @@ import com.bmk.daggerproject.domain.DetailsData
 import com.bmk.daggerproject.domain.MatchRepository
 import com.bmk.daggerproject.domain.ResponseData
 import io.reactivex.Observable
+import io.reactivex.Single
 import javax.inject.Inject
 
 class MatchRepositoryImpl @Inject constructor(
@@ -46,5 +47,9 @@ class MatchRepositoryImpl @Inject constructor(
                 comment = it.comment
             )
         }
+    }
+
+    override fun saveComment(id: String, comment: String): Single<Int> {
+        return db.matchDOA().addComment(id, comment)
     }
 }

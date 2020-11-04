@@ -68,7 +68,7 @@ class AFragment : CommonFragment(), AContract {
                         MainActivity.AnimType.FADE.getAnimPair().first,
                         MainActivity.AnimType.FADE.getAnimPair().second
                     )
-                    .replace(
+                    .add(
                         R.id.frame,
                         BFragment.newInstance(id),
                         BFragment.TAG
