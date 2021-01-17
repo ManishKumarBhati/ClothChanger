@@ -4,7 +4,7 @@ import com.bmk.daggerproject.BaseApplication;
 import com.bmk.daggerproject.di.module.ActivityProvider;
 import com.bmk.daggerproject.di.module.AppModule;
 import com.bmk.daggerproject.di.module.FragmentProvider;
-import com.bmk.daggerproject.di.module.NetworkModule;
+import com.bmk.data.module.NetworkModule;
 
 import javax.inject.Singleton;
 

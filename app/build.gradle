@@ -4,21 +4,21 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion versions.compileSdkVersion
+    buildToolsVersion versions.buildToolsVersion
 
-    dataBinding {
-        enabled = true
-    }
 
     defaultConfig {
         applicationId "com.bmk.daggerproject"
-        minSdkVersion 16
-        targetSdkVersion 29
+        minSdkVersion versions.minSdkVersion
+        targetSdkVersion versions.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    dataBinding {
+        enabled = true
     }
 
     buildTypes {
@@ -26,6 +26,13 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 
@@ -80,4 +87,6 @@ dependencies {
     testImplementation deps.testing.junit
     androidTestImplementation deps.androidx.test.espresso
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    implementation project(':domain')
+    implementation project(':data')
 }

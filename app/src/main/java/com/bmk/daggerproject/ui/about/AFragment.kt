@@ -7,10 +7,10 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentABinding
-import com.bmk.daggerproject.domain.ResponseData
 import com.bmk.daggerproject.ui.b.BFragment
 import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.CommonFragment
+import com.bmk.domain.ResponseData
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section

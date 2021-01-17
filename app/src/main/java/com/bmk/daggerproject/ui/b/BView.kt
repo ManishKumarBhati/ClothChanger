@@ -1,7 +1,7 @@
 package com.bmk.daggerproject.ui.b
 
-import com.bmk.daggerproject.domain.DetailsData
 import com.bmk.daggerproject.ui.base.BaseView
+import com.bmk.domain.DetailsData
 import io.reactivex.Observable
 
 interface BView : BaseView {

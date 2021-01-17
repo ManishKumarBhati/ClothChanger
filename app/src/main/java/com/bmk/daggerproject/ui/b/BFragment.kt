@@ -7,9 +7,9 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentBBinding
-import com.bmk.daggerproject.domain.DetailsData
 import com.bmk.daggerproject.util.CommonFragment
 import com.bmk.daggerproject.util.setGlideImage
+import com.bmk.domain.DetailsData
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
 import javax.inject.Inject

@@ -2,8 +2,8 @@ package com.bmk.daggerproject.ui.about
 
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.ItemABinding
-import com.bmk.daggerproject.domain.ResponseData
 import com.bmk.daggerproject.util.setGlideImage
+import com.bmk.domain.ResponseData
 import com.xwray.groupie.databinding.BindableItem
 import io.reactivex.subjects.PublishSubject
 
