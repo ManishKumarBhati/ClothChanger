@@ -1,6 +1,6 @@
 package com.bmk.daggerproject.ui.about
 
-import com.bmk.daggerproject.ui.base.BaseView
+import com.bmk.daggerproject.util.base.BaseView
 import com.bmk.domain.ResponseData
 import io.reactivex.Observable
 

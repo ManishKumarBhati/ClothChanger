@@ -1,4 +1,4 @@
-package com.bmk.daggerproject.ui.base
+package com.bmk.daggerproject.util.base
 
 
 interface BaseView {

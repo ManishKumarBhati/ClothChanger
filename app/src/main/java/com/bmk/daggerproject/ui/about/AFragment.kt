@@ -9,7 +9,7 @@ import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentABinding
 import com.bmk.daggerproject.ui.b.BFragment
 import com.bmk.daggerproject.ui.main.MainActivity
-import com.bmk.daggerproject.util.CommonFragment
+import com.bmk.daggerproject.util.base.CommonFragment
 import com.bmk.domain.ResponseData
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
 import com.xwray.groupie.GroupAdapter

@@ -1,6 +1,6 @@
 package com.bmk.daggerproject.ui.about
 
-import com.bmk.daggerproject.ui.base.BasePresenter
+import com.bmk.daggerproject.util.base.BasePresenter
 import com.bmk.domain.MatchRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo

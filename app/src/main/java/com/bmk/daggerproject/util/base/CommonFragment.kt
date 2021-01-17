@@ -1,4 +1,4 @@
-package com.bmk.daggerproject.util
+package com.bmk.daggerproject.util.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
