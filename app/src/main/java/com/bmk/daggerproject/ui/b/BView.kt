@@ -14,4 +14,5 @@ interface BView : BaseView {
     fun showDatePicker()
     fun onSubmitClick(): Observable<Unit>
     fun render(data: DetailsData)
+    fun empScreen()
 }

@@ -7,6 +7,8 @@ import android.widget.RadioButton
 import androidx.core.view.isVisible
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentBBinding
+import com.bmk.daggerproject.ui.c.CFragment
+import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.base.CommonFragment
 import com.bmk.daggerproject.util.dateFormat
 import com.bmk.daggerproject.util.showDatePicker
@@ -76,6 +78,25 @@ class BFragment : CommonFragment(), BView {
 
     override fun showErrorMessage(error: String?) {
         Log.e("Error", error)
+    }
+
+    override fun empScreen() {
+        activity?.let {
+            if (it.supportFragmentManager.findFragmentByTag(CFragment.TAG) == null) {
+                it.supportFragmentManager.beginTransaction()
+                    .addToBackStack(null)
+                    .setCustomAnimations(
+                        MainActivity.AnimType.FADE.getAnimPair().first,
+                        MainActivity.AnimType.FADE.getAnimPair().second
+                    )
+                    .add(
+                        R.id.frame,
+                        CFragment.newInstance(),
+                        CFragment.TAG
+                    )
+                    .commit()
+            }
+        }
     }
 
 
