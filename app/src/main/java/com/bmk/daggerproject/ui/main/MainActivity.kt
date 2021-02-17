@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.ActivityMainBinding
-import com.bmk.daggerproject.ui.about.AFragment
+import com.bmk.daggerproject.ui.a.AFragment
 import dagger.android.support.DaggerAppCompatActivity
 
 class MainActivity : DaggerAppCompatActivity() {

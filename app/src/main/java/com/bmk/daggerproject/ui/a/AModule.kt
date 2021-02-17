@@ -1,4 +1,4 @@
-package com.bmk.daggerproject.ui.about
+package com.bmk.daggerproject.ui.a
 
 import dagger.Module
 import dagger.Provides

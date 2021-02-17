@@ -1,4 +1,4 @@
-package com.bmk.daggerproject.ui.about
+package com.bmk.daggerproject.ui.a
 
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +11,7 @@ import com.bmk.daggerproject.ui.b.BFragment
 import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.base.CommonFragment
 import com.bmk.domain.ResponseData
-import com.jakewharton.rxbinding3.appcompat.queryTextChanges
+import com.jakewharton.rxbinding3.view.clicks
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
@@ -52,14 +52,6 @@ class AFragment : CommonFragment(), AContract {
         Log.e("Error", error)
     }
 
-    override fun getSearchText(): String {
-        return binding.svQuery.query.toString().trim()
-    }
-
-    override fun onQueryTextChanged(): Observable<CharSequence> {
-        return binding.svQuery.queryTextChanges()
-    }
-
     override fun render(data: List<ResponseData>) {
         section.update(emptyList())
 
@@ -68,7 +60,7 @@ class AFragment : CommonFragment(), AContract {
 
     }
 
-    override fun navigateToDetail(id: String) {
+    override fun navigateToDetail() {
         activity?.let {
             if (it.supportFragmentManager.findFragmentByTag(BFragment.TAG) == null) {
                 it.supportFragmentManager.beginTransaction()
@@ -79,7 +71,7 @@ class AFragment : CommonFragment(), AContract {
                     )
                     .add(
                         R.id.frame,
-                        BFragment.newInstance(id),
+                        BFragment.newInstance(),
                         BFragment.TAG
                     )
                     .commit()
@@ -87,8 +79,8 @@ class AFragment : CommonFragment(), AContract {
         }
     }
 
-    override fun onImageClick(): Observable<String> {
-        return subject
+    override fun onImageClick(): Observable<Unit> {
+        return binding.fabAdd.clicks()
     }
 
 

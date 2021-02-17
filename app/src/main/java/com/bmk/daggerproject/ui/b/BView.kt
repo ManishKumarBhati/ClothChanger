@@ -5,7 +5,13 @@ import com.bmk.domain.DetailsData
 import io.reactivex.Observable
 
 interface BView : BaseView {
-    fun getComment(): String
+    fun getFirstName(): String
+    fun getLastName(): String
+    fun getMob(): String
+    fun getGender(): String
+    fun getDOB(): String
+    fun onDobClick(): Observable<Unit>
+    fun showDatePicker()
     fun onSubmitClick(): Observable<Unit>
     fun render(data: DetailsData)
 }

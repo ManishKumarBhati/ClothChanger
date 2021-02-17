@@ -1,8 +1,7 @@
-package com.bmk.daggerproject.ui.about
+package com.bmk.daggerproject.ui.a
 
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.ItemABinding
-import com.bmk.daggerproject.util.setGlideImage
 import com.bmk.domain.ResponseData
 import com.xwray.groupie.databinding.BindableItem
 import io.reactivex.subjects.PublishSubject
@@ -19,7 +18,6 @@ class AItem(
         viewBinding.apply {
             data.imgUrl?.let {
                 ivImg.apply {
-                    setGlideImage(it)
                     setOnClickListener { subject.onNext(data.id) }
                 }
             }
