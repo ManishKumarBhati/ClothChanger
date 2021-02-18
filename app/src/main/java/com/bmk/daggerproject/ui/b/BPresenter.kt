@@ -1,11 +1,8 @@
 package com.bmk.daggerproject.ui.b
 
-import android.util.Log
+import com.bmk.daggerproject.ui.d.PersonalInputRequest
 import com.bmk.daggerproject.util.base.BasePresenter
-import com.bmk.domain.MatchRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class BPresenter @Inject constructor(
@@ -20,7 +17,7 @@ class BPresenter @Inject constructor(
 
         submitObs
             .filter { !it }
-            .subscribe { view.empScreen() }
+            .subscribe { view.empScreen(getData()) }
             .addTo(disposable)
 
         submitObs
@@ -29,11 +26,17 @@ class BPresenter @Inject constructor(
             .addTo(disposable)
     }
 
-    fun validateInput(): String? {
-        Log.d(
-            "bmk",
-            """${view.getFirstName()}${view.getLastName()} ${view.getMob()} ${view.getDOB()}"""
+    private fun getData(): PersonalInputRequest {
+        return PersonalInputRequest(
+            fName = view.getFirstName(),
+            lName = view.getLastName(),
+            mob = view.getMob(),
+            gender = view.getGender(),
+            dob = view.getDOB()
         )
+    }
+
+    fun validateInput(): String? {
         return when {
             view.getFirstName().isEmpty() -> "Please Enter First Name"
             view.getLastName().isEmpty() -> "Please Enter Last Name"

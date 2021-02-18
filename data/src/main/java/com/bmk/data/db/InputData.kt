@@ -1,12 +1,13 @@
 package com.bmk.data.db
 
 import androidx.room.*
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 
-@Entity(tableName = "match_data")
+@Entity(tableName = "user_info_data")
 data class InputData(
-    @PrimaryKey val id: String,
+    @PrimaryKey val id: Long,
     @JvmField val fName: String,
     @JvmField val lName: String,
     @JvmField val mob: String,
@@ -26,18 +27,18 @@ data class InputData(
 )
 
 @Dao
-interface MatchDOA {
+interface LocalDOA {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(data: InputData)
+    fun insertAll(data: InputData): Long
 
-    @Query("SELECT * FROM match_data where id =:param LIMIT 1")
+    @Query("SELECT * FROM user_info_data where id =:param LIMIT 1")
     fun getData(param: String): Observable<InputData>
 
-    @Query("SELECT * FROM match_data ")
+    @Query("SELECT * FROM user_info_data ")
     fun getAllData(): Observable<List<InputData>>
 
     @Query(
-        "Update match_data set fName=:fName,lName=:lName,mob=:mob,gender=:gender,dob=:dob where id =:id "
+        "Update user_info_data set fName=:fName,lName=:lName,mob=:mob,gender=:gender,dob=:dob where id =:id "
     )
     fun updatePersonalInfo(
         id: String,
@@ -48,7 +49,7 @@ interface MatchDOA {
         dob: String
     ): Single<Int>
 
-    @Query("Update match_data set empNo=:empNo,empName=:empName,empdesg=:empdesg,accountType=:accountType,exp=:exp where id =:id ")
+    @Query("Update user_info_data set empNo=:empNo,empName=:empName,empdesg=:empdesg,accountType=:accountType,exp=:exp where id =:id ")
     fun updateEmpInfo(
         id: String,
         empNo: String,
@@ -58,7 +59,7 @@ interface MatchDOA {
         exp: String
     ): Single<Int>
 
-    @Query("Update match_data set bankName=:bankName,branch=:branch,acNo=:acNo,ifscCode=:ifscCode,image=:image where id =:id ")
+    @Query("Update user_info_data set bankName=:bankName,branch=:branch,acNo=:acNo,ifscCode=:ifscCode,image=:image where id =:id ")
     fun updateBankInfo(
         id: String,
         bankName: String,

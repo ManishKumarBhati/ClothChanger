@@ -5,5 +5,5 @@ import io.reactivex.Single
 
 interface MatchRepository {
     fun getData(): Observable<List<DataResponse>>
-    fun saveData(request: DataRequest)
+    fun saveData(request: DataRequest): Single<Long>
 }

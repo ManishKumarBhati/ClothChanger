@@ -4,7 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.bmk.data.ApiServiceInterface
-import com.bmk.data.db.MatchDataBase
+import com.bmk.data.MatchRepositoryImpl
+import com.bmk.data.db.LocalDataBase
 import com.bmk.data.utils.Constants
 import com.bmk.data.utils.HeaderInterceptor
 import com.bmk.domain.MatchRepository
@@ -77,14 +78,14 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(context: Context): MatchDataBase {
-        return Room.databaseBuilder(context, MatchDataBase::class.java, "test_app_db")
+    fun provideAppDatabase(context: Context): LocalDataBase {
+        return Room.databaseBuilder(context, LocalDataBase::class.java, "test_app_db.db")
             .fallbackToDestructiveMigration()
             .build()
     }
 
     @Provides
-    fun provideRepository(repository: com.bmk.data.MatchRepositoryImpl): MatchRepository {
+    fun provideRepository(repository: MatchRepositoryImpl): MatchRepository {
         return repository
     }
 

@@ -4,24 +4,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.RadioButton
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.bmk.daggerproject.R
-import com.bmk.daggerproject.databinding.FragmentBBinding
-import com.bmk.daggerproject.databinding.FragmentCBinding
 import com.bmk.daggerproject.databinding.FragmentDBinding
 import com.bmk.daggerproject.ui.a.AFragment
 import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.base.CommonFragment
-import com.bmk.daggerproject.util.dateFormat
 import com.bmk.daggerproject.util.getDefaultAdapter
-import com.bmk.daggerproject.util.showDatePicker
-import com.bmk.domain.DetailsData
 import com.bmk.domain.KeyValue
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
-import java.util.*
 import javax.inject.Inject
 
 class DFragment : CommonFragment(), DView {
@@ -98,8 +92,11 @@ class DFragment : CommonFragment(), DView {
                 KeyValue(4, "Malad West")
             )
         val TAG: String = "DFragment"
-        fun newInstance(): DFragment {
-            return DFragment()
+        val ARGS_EMP_DATA: String = "DFragment_data"
+        fun newInstance(data: EmployeeInputRequest): DFragment {
+            return DFragment().apply {
+                arguments = bundleOf(DFragment.ARGS_EMP_DATA to data)
+            }
         }
     }
 }

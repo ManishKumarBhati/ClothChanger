@@ -9,11 +9,11 @@ import androidx.core.view.isVisible
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentBBinding
 import com.bmk.daggerproject.ui.c.CFragment
+import com.bmk.daggerproject.ui.d.PersonalInputRequest
 import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.base.CommonFragment
 import com.bmk.daggerproject.util.dateFormat
 import com.bmk.daggerproject.util.showDatePicker
-import com.bmk.domain.DetailsData
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
 import java.util.*
@@ -81,7 +81,7 @@ class BFragment : CommonFragment(), BView {
         Log.e("Error", error)
     }
 
-    override fun empScreen() {
+    override fun empScreen(data: PersonalInputRequest) {
         activity?.let {
             if (it.supportFragmentManager.findFragmentByTag(CFragment.TAG) == null) {
                 it.supportFragmentManager.beginTransaction()
@@ -92,7 +92,7 @@ class BFragment : CommonFragment(), BView {
                     )
                     .add(
                         R.id.frame,
-                        CFragment.newInstance(),
+                        CFragment.newInstance(data),
                         CFragment.TAG
                     )
                     .commit()

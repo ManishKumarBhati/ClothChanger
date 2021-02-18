@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentABinding
 import com.bmk.daggerproject.ui.b.BFragment
@@ -39,7 +40,7 @@ class AFragment : CommonFragment(), AContract {
     private fun initView() {
         section = Section()
         binding.rvPlayersList.apply {
-            layoutManager = GridLayoutManager(requireContext(), 5)
+            layoutManager = LinearLayoutManager(requireContext())
             adapter = GroupAdapter<ViewHolder>().apply { add(section) }
         }
     }

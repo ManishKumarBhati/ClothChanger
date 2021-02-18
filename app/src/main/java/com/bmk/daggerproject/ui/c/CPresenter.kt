@@ -1,23 +1,38 @@
 package com.bmk.daggerproject.ui.c
 
+import com.bmk.daggerproject.ui.d.EmployeeInputRequest
+import com.bmk.daggerproject.ui.d.PersonalInputRequest
 import com.bmk.daggerproject.util.base.BasePresenter
-import com.bmk.domain.MatchRepository
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
-class CPresenter @Inject constructor(view: CView) : BasePresenter<CView>(view) {
+class CPresenter @Inject constructor(
+    view: CView,
+    val pageData: PersonalInputRequest?
+) : BasePresenter<CView>(view) {
     override fun start() {
         val submitObs = view.onSubmitClick().map { validateInput() != null }.share()
 
         submitObs
-            .filter { !it }
-            .subscribe { view.bankScreen() }
+            .filter { !it && pageData != null }
+            .subscribe { view.bankScreen(getData()) }
             .addTo(disposable)
 
         submitObs
             .filter { it }
             .subscribe { view.showError(validateInput()!!) }
             .addTo(disposable)
+    }
+
+    private fun getData(): EmployeeInputRequest {
+        return EmployeeInputRequest(
+            personalInfo = pageData!!,
+            empNo = view.getEmpNo(),
+            empName = view.getEmpName(),
+            empdesg = view.getEmpDesg(),
+            accountType = view.getEmpAcType().value,
+            exp = view.getEmpExp().value
+        )
     }
 
     fun validateInput(): String? {

@@ -5,17 +5,19 @@ import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentCBinding
 import com.bmk.daggerproject.ui.d.DFragment
+import com.bmk.daggerproject.ui.d.EmployeeInputRequest
+import com.bmk.daggerproject.ui.d.PersonalInputRequest
 import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.base.CommonFragment
 import com.bmk.daggerproject.util.getDefaultAdapter
 import com.bmk.domain.KeyValue
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
-import java.util.*
 import javax.inject.Inject
 
 class CFragment : CommonFragment(), CView {
@@ -39,15 +41,15 @@ class CFragment : CommonFragment(), CView {
     }
 
     override fun getEmpNo(): String {
-        return binding.etEmpNo.toString().trim()
+        return binding.etEmpNo.text.toString().trim()
     }
 
     override fun getEmpName(): String {
-        return binding.etEmpName.toString().trim()
+        return binding.etEmpName.text.toString().trim()
     }
 
     override fun getEmpDesg(): String {
-        return binding.etEmpDesg.toString().trim()
+        return binding.etEmpDesg.text.toString().trim()
     }
 
     override fun getEmpAcType(): KeyValue {
@@ -74,7 +76,7 @@ class CFragment : CommonFragment(), CView {
         Log.e("Error", error)
     }
 
-    override fun bankScreen() {
+    override fun bankScreen(data: EmployeeInputRequest) {
         activity?.let {
             if (it.supportFragmentManager.findFragmentByTag(DFragment.TAG) == null) {
                 it.supportFragmentManager.beginTransaction()
@@ -85,7 +87,7 @@ class CFragment : CommonFragment(), CView {
                     )
                     .add(
                         R.id.frame,
-                        DFragment.newInstance(),
+                        DFragment.newInstance(data),
                         DFragment.TAG
                     )
                     .commit()
@@ -104,9 +106,12 @@ class CFragment : CommonFragment(), CView {
             KeyValue(2, "2"),
             KeyValue(3, "3")
         )
+        val ARGS_PERSONAL_DATA: String = "CFragment_data"
 
-        fun newInstance(): CFragment {
-            return CFragment()
+        fun newInstance(data: PersonalInputRequest): CFragment {
+            return CFragment().apply {
+                arguments = bundleOf(ARGS_PERSONAL_DATA to data)
+            }
         }
     }
 }
