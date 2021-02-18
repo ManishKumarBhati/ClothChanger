@@ -13,6 +13,6 @@ interface BView : BaseView {
     fun onDobClick(): Observable<Unit>
     fun showDatePicker()
     fun onSubmitClick(): Observable<Unit>
-    fun render(data: DetailsData)
+    fun showError(error: String)
     fun empScreen()
 }

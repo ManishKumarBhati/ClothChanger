@@ -9,12 +9,37 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class BPresenter @Inject constructor(
-    view: BView,
-    private val repository: MatchRepository
+    view: BView
 ) : BasePresenter<BView>(view) {
     override fun start() {
-        view.onSubmitClick()
+        view.onDobClick()
+            .subscribe { view.showDatePicker() }
+            .addTo(disposable)
+
+        val submitObs = view.onSubmitClick().map { validateInput() != null }.share()
+
+        submitObs
+            .filter { !it }
             .subscribe { view.empScreen() }
             .addTo(disposable)
+
+        submitObs
+            .filter { it }
+            .subscribe { view.showError(validateInput()!!) }
+            .addTo(disposable)
+    }
+
+    fun validateInput(): String? {
+        Log.d(
+            "bmk",
+            """${view.getFirstName()}${view.getLastName()} ${view.getMob()} ${view.getDOB()}"""
+        )
+        return when {
+            view.getFirstName().isEmpty() -> "Please Enter First Name"
+            view.getLastName().isEmpty() -> "Please Enter Last Name"
+            view.getMob().isEmpty() -> "Please Enter Mobile No"
+            view.getDOB().equals("Select DOB", true) -> "Please Select DOB"
+            else -> null
+        }
     }
 }

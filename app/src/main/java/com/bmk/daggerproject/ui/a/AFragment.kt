@@ -10,7 +10,7 @@ import com.bmk.daggerproject.databinding.FragmentABinding
 import com.bmk.daggerproject.ui.b.BFragment
 import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.base.CommonFragment
-import com.bmk.domain.ResponseData
+import com.bmk.domain.DataResponse
 import com.jakewharton.rxbinding3.view.clicks
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -26,7 +26,7 @@ class AFragment : CommonFragment(), AContract {
     lateinit var presenter: APresenter
     lateinit var section: Section
     lateinit var binding: FragmentABinding
-    val subject = PublishSubject.create<String>()
+    val subject = PublishSubject.create<DataResponse>()
     override fun getLayout() = R.layout.fragment_a
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,12 +52,10 @@ class AFragment : CommonFragment(), AContract {
         Log.e("Error", error)
     }
 
-    override fun render(data: List<ResponseData>) {
+    override fun render(data: List<DataResponse>) {
         section.update(emptyList())
-
-        val item = data.filter { it.imgUrl != null }.map { AItem(it, subject) }
+        val item = data.map { AItem(it, subject) }
         section.update(item)
-
     }
 
     override fun navigateToDetail() {

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.RadioButton
+import android.widget.Toast
 import androidx.core.view.isVisible
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentBBinding
@@ -68,8 +69,8 @@ class BFragment : CommonFragment(), BView {
         }, Date(), null, Date())
     }
 
-    override fun render(data: DetailsData) {
-
+    override fun showError(error: String) {
+        Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
     }
 
     override fun showProgress(show: Boolean) {

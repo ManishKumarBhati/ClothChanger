@@ -4,18 +4,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.RadioButton
+import android.widget.Toast
 import androidx.core.view.isVisible
 import com.bmk.daggerproject.R
-import com.bmk.daggerproject.databinding.FragmentBBinding
 import com.bmk.daggerproject.databinding.FragmentCBinding
 import com.bmk.daggerproject.ui.d.DFragment
 import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.base.CommonFragment
-import com.bmk.daggerproject.util.dateFormat
 import com.bmk.daggerproject.util.getDefaultAdapter
-import com.bmk.daggerproject.util.showDatePicker
-import com.bmk.domain.DetailsData
+import com.bmk.domain.KeyValue
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
 import java.util.*
@@ -25,8 +22,8 @@ class CFragment : CommonFragment(), CView {
     @Inject
     lateinit var presenter: CPresenter
     lateinit var binding: FragmentCBinding
-    lateinit var empExpAdapter: ArrayAdapter<String>
-    lateinit var acTypeAdapter: ArrayAdapter<String>
+    lateinit var empExpAdapter: ArrayAdapter<KeyValue>
+    lateinit var acTypeAdapter: ArrayAdapter<KeyValue>
 
     override fun getLayout() = R.layout.fragment_c
 
@@ -34,9 +31,10 @@ class CFragment : CommonFragment(), CView {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentCBinding.bind(view)
         presenter.start()
-        empExpAdapter = getDefaultAdapter(requireContext(), listOf("1", "2", "3", "4", "5"))
+        empExpAdapter = getDefaultAdapter(requireContext(), ExperienceList)
         binding.spnrEmpExp.adapter = empExpAdapter
-        acTypeAdapter = getDefaultAdapter(requireContext(), listOf("Current", "Saving"))
+
+        acTypeAdapter = getDefaultAdapter(requireContext(), AcTypeList)
         binding.spnrAcType.adapter = acTypeAdapter
     }
 
@@ -52,20 +50,20 @@ class CFragment : CommonFragment(), CView {
         return binding.etEmpDesg.toString().trim()
     }
 
-    override fun getEmpAcType(): String {
-        return binding.spnrEmpExp.selectedItem as String
+    override fun getEmpAcType(): KeyValue {
+        return binding.spnrAcType.selectedItem as KeyValue
     }
 
-    override fun getEmpExp(): String {
-        return binding.spnrEmpExp.selectedItem as String
+    override fun getEmpExp(): KeyValue {
+        return binding.spnrEmpExp.selectedItem as KeyValue
     }
 
     override fun onSubmitClick(): Observable<Unit> {
         return binding.btnSubmit.clicks()
     }
 
-    override fun render() {
-
+    override fun showError(error: String) {
+        Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
     }
 
     override fun showProgress(show: Boolean) {
@@ -98,6 +96,15 @@ class CFragment : CommonFragment(), CView {
 
     companion object {
         val TAG: String = "CFragment"
+        val AcTypeList =
+            listOf(KeyValue(-1, "Select A/C Type"), KeyValue(1, "Saving"), KeyValue(2, "Current"))
+        val ExperienceList = listOf(
+            KeyValue(-1, "Select Experience"),
+            KeyValue(1, "1"),
+            KeyValue(2, "2"),
+            KeyValue(3, "3")
+        )
+
         fun newInstance(): CFragment {
             return CFragment()
         }

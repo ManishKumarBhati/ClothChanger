@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [MatchData::class],
+    entities = [InputData::class],
     version = 1, exportSchema = false
 )
 abstract class MatchDataBase : RoomDatabase() {
