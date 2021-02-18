@@ -12,4 +12,5 @@ interface CView : BaseView {
     fun getEmpExp(): String
     fun onSubmitClick(): Observable<Unit>
     fun render()
+    fun bankScreen()
 }

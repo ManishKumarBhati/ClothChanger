@@ -1,4 +1,4 @@
-package com.bmk.daggerproject.ui.c
+package com.bmk.daggerproject.ui.d
 
 import android.util.Log
 import com.bmk.daggerproject.util.base.BasePresenter
@@ -8,13 +8,13 @@ import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class CPresenter @Inject constructor(
-    view: CView,
+class DPresenter @Inject constructor(
+    view: DView,
     private val repository: MatchRepository
-) : BasePresenter<CView>(view) {
+) : BasePresenter<DView>(view) {
     override fun start() {
         view.onSubmitClick()
-            .subscribe { view.bankScreen() }
+            .subscribe { view.render() }
             .addTo(disposable)
     }
 }
