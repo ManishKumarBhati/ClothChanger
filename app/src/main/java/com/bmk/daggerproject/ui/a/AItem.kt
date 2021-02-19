@@ -3,6 +3,7 @@ package com.bmk.daggerproject.ui.a
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.ItemABinding
 import com.bmk.domain.DataResponse
+import com.bumptech.glide.Glide
 import com.xwray.groupie.databinding.BindableItem
 import io.reactivex.subjects.PublishSubject
 
@@ -20,6 +21,7 @@ class AItem(
             tvGender.text = "Gender: ${data.gender}"
             tvMob.text = "Mobile No: ${data.mob}"
             root.setOnClickListener { subject.onNext(data) }
+            Glide.with(root.context).load(data.image).into(ivImage)
         }
     }
 }

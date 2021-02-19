@@ -10,6 +10,7 @@ interface DView : BaseView {
     fun getBranchName(): KeyValue
     fun getAcNo(): String
     fun getIfsc(): String
+    fun getImageURL(): String?
     fun onSubmitClick(): Observable<Unit>
     fun backToHome()
     fun showToast(error: String)

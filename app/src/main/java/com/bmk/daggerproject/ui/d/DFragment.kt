@@ -1,10 +1,19 @@
 package com.bmk.daggerproject.ui.d
 
+import android.Manifest
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.bmk.daggerproject.R
@@ -16,16 +25,22 @@ import com.bmk.daggerproject.util.base.CommonFragment
 import com.bmk.daggerproject.util.getDefaultAdapter
 import com.bmk.domain.BankData
 import com.bmk.domain.KeyValue
+import com.bumptech.glide.Glide
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+
 
 class DFragment : CommonFragment(), DView {
     @Inject
     lateinit var presenter: DPresenter
     lateinit var binding: FragmentDBinding
     lateinit var empExpAdapter: ArrayAdapter<KeyValue>
-
+    var imageFilePath: String? = null
     override fun getLayout() = R.layout.fragment_d
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,6 +52,49 @@ class DFragment : CommonFragment(), DView {
             BranchList
         )
         binding.spnrBranchName.adapter = empExpAdapter
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CAPTURE_IMAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startCamera()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode === REQUEST_CAPTURE_IMAGE && resultCode === RESULT_OK) {
+            if (data != null && data.extras != null) {
+                val d = data.extras!!.get("data") as Bitmap
+                binding.ivImage.setImageBitmap(d)
+            }
+        }
+        if (requestCode == REQUEST_CAPTURE_IMAGE) {
+            binding.ivImage.visibility = View.VISIBLE
+            Glide.with(this).load(imageFilePath).into(binding.ivImage)
+        }
+    }
+
+
+    private fun createImageFile(): File? {
+        val timeStamp: String =
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val imageFileName = "IMG_" + timeStamp + "_"
+        val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val image: File = File.createTempFile(
+            imageFileName,  /* prefix */
+            ".jpg",  /* suffix */
+            storageDir /* directory */
+        )
+        imageFilePath = image.absolutePath
+        return image
     }
 
     override fun getBankName(): String {
@@ -55,6 +113,11 @@ class DFragment : CommonFragment(), DView {
         return binding.etIfsc.text.toString().trim()
     }
 
+    override fun getImageURL(): String? {
+        return imageFilePath
+    }
+
+
     override fun onSubmitClick(): Observable<Unit> {
         return binding.btnSubmit.clicks()
     }
@@ -66,11 +129,14 @@ class DFragment : CommonFragment(), DView {
     override fun render(data: BankData) {
         binding.etBankName.setText(data.bankName)
         val pos =
-            BranchList.firstOrNull { it.value == data.branch } ?: CFragment.ExperienceList.first()
+            BranchList.firstOrNull { it.value == data.branch }
+                ?: CFragment.ExperienceList.first()
         binding.spnrBranchName.setSelection(empExpAdapter.getPosition(pos))
         binding.etAcNo.setText(data.acNo)
         binding.etIfsc.setText(data.ifscCode)
-//        binding.etIfsc.text
+        imageFilePath = data.image
+        Glide.with(this).load(data.image).into(binding.ivImage)
+        binding.ivImage.visibility = View.VISIBLE
     }
 
     override fun backToHome() {
@@ -93,8 +159,43 @@ class DFragment : CommonFragment(), DView {
         Log.e("Error", error)
     }
 
+    fun openCamera() {
+        if (checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED
+        ) requestPermissions(
+            arrayOf(Manifest.permission.CAMERA),
+            REQUEST_CAPTURE_IMAGE
+        ) else startCamera()
+    }
+
+    fun startCamera() {
+        val pictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        activity?.let {
+
+            if (pictureIntent.resolveActivity(it.packageManager) != null) {
+                //Create a file to store the image
+                var photoFile: File? = null
+                try {
+                    photoFile = createImageFile();
+                } catch (ex: IOException) {
+                }
+                if (photoFile != null) {
+                    val photoURI =
+                        FileProvider.getUriForFile(
+                            requireContext(),
+                            "com.bmk.daggerproject.provider",
+                            photoFile
+                        )
+                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(pictureIntent, REQUEST_CAPTURE_IMAGE)
+                }
+            }
+        }
+    }
 
     companion object {
+        const val REQUEST_CAPTURE_IMAGE = 100
+
         val BranchList =
             listOf(
                 KeyValue(-1, "Select Branch"),

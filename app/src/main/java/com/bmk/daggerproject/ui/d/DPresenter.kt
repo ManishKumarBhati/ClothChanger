@@ -86,7 +86,7 @@ class DPresenter @Inject constructor(
             branch = view.getBranchName().value,
             acNo = view.getAcNo(),
             ifscCode = view.getIfsc(),
-            image = ""
+            image = view.getImageURL()!!
         )
     }
 
@@ -96,6 +96,7 @@ class DPresenter @Inject constructor(
             view.getBranchName().id == -1 -> "Please Select branch"
             view.getAcNo().isEmpty() -> "Please Enter A/C No"
             view.getIfsc().isEmpty() -> "Please Enter IFSC Code"
+            view.getImageURL().isNullOrEmpty() -> "Please Select Image"
             else -> null
         }
     }
