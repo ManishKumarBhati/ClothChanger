@@ -9,4 +9,10 @@ public class BModule {
     fun provideBFragment(fragment: BFragment): BView {
         return fragment
     }
+
+    @Provides
+    fun getPageData(fragment: BFragment): Long? {
+        return fragment.arguments?.getLong(BFragment.ARGS_DATA_ID)
+            ?: error("Personal Data required")
+    }
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentBBinding
@@ -14,6 +15,7 @@ import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.base.CommonFragment
 import com.bmk.daggerproject.util.dateFormat
 import com.bmk.daggerproject.util.showDatePicker
+import com.bmk.domain.PersonalData
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
 import java.util.*
@@ -100,11 +102,26 @@ class BFragment : CommonFragment(), BView {
         }
     }
 
+    override fun render(dataRequest: PersonalData) {
+        binding.etFirstName.setText(dataRequest.fName)
+        binding.etLastName.setText(dataRequest.lName)
+        binding.etMob.setText(dataRequest.mob)
+        if (dataRequest.gender.equals("male", true))
+            binding.rbMale.isChecked = true
+        else binding.rbFemale.isChecked = true
+
+        binding.tvDob.text = dataRequest.dob
+    }
+
 
     companion object {
         val TAG: String = "BFragment"
-        fun newInstance(): BFragment {
-            return BFragment()
+        val ARGS_DATA_ID: String = "B_Fragment_data_id"
+
+        fun newInstance(id: Long): BFragment {
+            return BFragment().apply {
+                arguments = bundleOf(ARGS_DATA_ID to id)
+            }
         }
     }
 }

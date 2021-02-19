@@ -5,6 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class PersonalInputRequest(
+    @JvmField val id: Long,
     @JvmField val fName: String,
     @JvmField val lName: String,
     @JvmField val mob: String,

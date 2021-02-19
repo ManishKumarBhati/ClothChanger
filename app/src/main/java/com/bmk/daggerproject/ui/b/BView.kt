@@ -2,6 +2,8 @@ package com.bmk.daggerproject.ui.b
 
 import com.bmk.daggerproject.ui.d.PersonalInputRequest
 import com.bmk.daggerproject.util.base.BaseView
+import com.bmk.domain.DataRequest
+import com.bmk.domain.PersonalData
 import io.reactivex.Observable
 
 interface BView : BaseView {
@@ -15,4 +17,5 @@ interface BView : BaseView {
     fun onSubmitClick(): Observable<Unit>
     fun showError(error: String)
     fun empScreen(data: PersonalInputRequest)
+    fun render(dataRequest: PersonalData)
 }

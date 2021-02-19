@@ -2,13 +2,31 @@ package com.bmk.daggerproject.ui.b
 
 import com.bmk.daggerproject.ui.d.PersonalInputRequest
 import com.bmk.daggerproject.util.base.BasePresenter
+import com.bmk.domain.MatchRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
 class BPresenter @Inject constructor(
-    view: BView
+    view: BView,
+    val id: Long?,
+    val repository: MatchRepository
 ) : BasePresenter<BView>(view) {
     override fun start() {
+        id?.let {
+            if (it > 0L) {
+                repository.getPersonalData(it)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ response ->
+                        view.showProgress(false)
+                        view.render(response)
+                    }, { error ->
+                        view.showProgress(false)
+                        view.showErrorMessage(error.localizedMessage)
+                    })
+                    .addTo(disposable)
+            }
+        }
         view.onDobClick()
             .subscribe { view.showDatePicker() }
             .addTo(disposable)
@@ -28,6 +46,7 @@ class BPresenter @Inject constructor(
 
     private fun getData(): PersonalInputRequest {
         return PersonalInputRequest(
+            id = id ?: -1,
             fName = view.getFirstName(),
             lName = view.getLastName(),
             mob = view.getMob(),

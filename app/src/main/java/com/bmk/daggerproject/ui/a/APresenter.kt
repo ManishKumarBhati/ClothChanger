@@ -2,6 +2,7 @@ package com.bmk.daggerproject.ui.a
 
 import com.bmk.daggerproject.util.base.BasePresenter
 import com.bmk.domain.MatchRepository
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
@@ -25,8 +26,8 @@ class APresenter @Inject constructor(
             }).addTo(disposable)
             .addTo(disposable)
 
-        view.onImageClick()
-            .subscribe { view.navigateToDetail() }
+        Observable.merge(view.onAddClick().map { -1L }, view.onitemClick().map { it.id })
+            .subscribe(view::navigateToDetail)
             .addTo(disposable)
     }
 }

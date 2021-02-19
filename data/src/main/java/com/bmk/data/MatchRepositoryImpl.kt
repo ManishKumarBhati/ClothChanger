@@ -1,27 +1,21 @@
 package com.bmk.data
 
-import android.util.Log
 import com.bmk.data.db.InputData
 import com.bmk.data.db.LocalDataBase
-import com.bmk.domain.DataRequest
+import com.bmk.domain.*
 import com.bmk.domain.DataResponse
-import com.bmk.domain.MatchRepository
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
-class MatchRepositoryImpl @Inject constructor(
-    val db: LocalDataBase
-) :
-    MatchRepository {
+class MatchRepositoryImpl @Inject constructor(val db: LocalDataBase) : MatchRepository {
     override fun getData(): Observable<List<DataResponse>> {
-
         return db.matchDOA().getAllData().map { data ->
             data.map {
                 DataResponse(
-                    id = Date().time.toString(),
+                    id = it.id,
                     fName = it.fName,
                     lName = it.lName,
                     mob = it.mob,
@@ -86,5 +80,62 @@ class MatchRepositoryImpl @Inject constructor(
                 )
             )
         }
+    }
+
+    override fun getPersonalData(id: Long): Observable<PersonalData> {
+        return db.matchDOA().getData(id).map {
+            PersonalData(
+                fName = it.fName,
+                lName = it.lName,
+                mob = it.mob,
+                gender = it.gender,
+                dob = it.dob
+            )
+        }
+    }
+
+    override fun getEmpData(id: Long): Observable<EmployeeData> {
+        return db.matchDOA().getData(id).map {
+            EmployeeData(
+                empNo = it.empNo,
+                empName = it.empName,
+                empdesg = it.empdesg,
+                accountType = it.accountType,
+                exp = it.exp
+            )
+        }
+    }
+
+    override fun getBankData(id: Long): Observable<BankData> {
+        return db.matchDOA().getData(id).map {
+            BankData(
+                bankName = it.bankName,
+                branch = it.branch,
+                acNo = it.acNo,
+                ifscCode = it.ifscCode,
+                image = it.image
+            )
+        }
+    }
+
+    override fun getModifyData(id: Long, request: DataRequest): Single<Int> {
+        return db.matchDOA().updateData(
+            id = id,
+            fName = request.fName,
+            lName = request.lName,
+            mob = request.mob,
+            gender = request.gender,
+            dob = request.dob,
+            empNo = request.empNo,
+            empName = request.empName,
+            empdesg = request.empdesg,
+            accountType = request.accountType,
+            exp = request.exp,
+            bankName = request.bankName,
+            branch = request.branch,
+            acNo = request.acNo,
+            ifscCode = request.ifscCode,
+            image = request.image
+        )
     }
 }

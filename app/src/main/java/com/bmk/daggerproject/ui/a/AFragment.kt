@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentABinding
@@ -59,7 +58,7 @@ class AFragment : CommonFragment(), AContract {
         section.update(item)
     }
 
-    override fun navigateToDetail() {
+    override fun navigateToDetail(id: Long) {
         activity?.let {
             if (it.supportFragmentManager.findFragmentByTag(BFragment.TAG) == null) {
                 it.supportFragmentManager.beginTransaction()
@@ -70,7 +69,7 @@ class AFragment : CommonFragment(), AContract {
                     )
                     .add(
                         R.id.frame,
-                        BFragment.newInstance(),
+                        BFragment.newInstance(id),
                         BFragment.TAG
                     )
                     .commit()
@@ -78,8 +77,12 @@ class AFragment : CommonFragment(), AContract {
         }
     }
 
-    override fun onImageClick(): Observable<Unit> {
+    override fun onAddClick(): Observable<Unit> {
         return binding.fabAdd.clicks()
+    }
+
+    override fun onitemClick(): Observable<DataResponse> {
+        return subject
     }
 
 

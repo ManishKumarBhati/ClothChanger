@@ -3,14 +3,31 @@ package com.bmk.daggerproject.ui.c
 import com.bmk.daggerproject.ui.d.EmployeeInputRequest
 import com.bmk.daggerproject.ui.d.PersonalInputRequest
 import com.bmk.daggerproject.util.base.BasePresenter
+import com.bmk.domain.MatchRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
 class CPresenter @Inject constructor(
     view: CView,
-    val pageData: PersonalInputRequest?
+    val pageData: PersonalInputRequest?,
+    val repository: MatchRepository
 ) : BasePresenter<CView>(view) {
     override fun start() {
+        pageData?.let {
+            if (it.id > 0L) {
+                repository.getEmpData(it.id)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ response ->
+                        view.showProgress(false)
+                        view.render(response)
+                    }, { error ->
+                        view.showProgress(false)
+                        view.showErrorMessage(error.localizedMessage)
+                    })
+                    .addTo(disposable)
+            }
+        }
         val submitObs = view.onSubmitClick().map { validateInput() != null }.share()
 
         submitObs

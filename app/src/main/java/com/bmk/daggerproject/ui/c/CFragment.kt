@@ -15,6 +15,7 @@ import com.bmk.daggerproject.ui.d.PersonalInputRequest
 import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.base.CommonFragment
 import com.bmk.daggerproject.util.getDefaultAdapter
+import com.bmk.domain.EmployeeData
 import com.bmk.domain.KeyValue
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
@@ -93,6 +94,17 @@ class CFragment : CommonFragment(), CView {
                     .commit()
             }
         }
+    }
+
+    override fun render(data: EmployeeData) {
+        binding.etEmpNo.setText(data.empNo)
+        binding.etEmpName.setText(data.empName)
+        binding.etEmpDesg.setText(data.empdesg)
+        val posExp = ExperienceList.firstOrNull { it.value == data.exp } ?: ExperienceList.first()
+        binding.spnrEmpExp.setSelection(empExpAdapter.getPosition(posExp))
+        val posAcType =
+            AcTypeList.firstOrNull { it.value == data.accountType } ?: ExperienceList.first()
+        binding.spnrAcType.setSelection(acTypeAdapter.getPosition(posAcType))
     }
 
 

@@ -10,9 +10,11 @@ import androidx.core.view.isVisible
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentDBinding
 import com.bmk.daggerproject.ui.a.AFragment
+import com.bmk.daggerproject.ui.c.CFragment
 import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.base.CommonFragment
 import com.bmk.daggerproject.util.getDefaultAdapter
+import com.bmk.domain.BankData
 import com.bmk.domain.KeyValue
 import com.jakewharton.rxbinding3.view.clicks
 import io.reactivex.Observable
@@ -57,8 +59,18 @@ class DFragment : CommonFragment(), DView {
         return binding.btnSubmit.clicks()
     }
 
-    override fun showError(error: String) {
+    override fun showToast(error: String) {
         Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun render(data: BankData) {
+        binding.etBankName.setText(data.bankName)
+        val pos =
+            BranchList.firstOrNull { it.value == data.branch } ?: CFragment.ExperienceList.first()
+        binding.spnrBranchName.setSelection(empExpAdapter.getPosition(pos))
+        binding.etAcNo.setText(data.acNo)
+        binding.etIfsc.setText(data.ifscCode)
+//        binding.etIfsc.text
     }
 
     override fun backToHome() {

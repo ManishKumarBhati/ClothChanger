@@ -14,10 +14,25 @@ class DPresenter @Inject constructor(
     private val repository: MatchRepository
 ) : BasePresenter<DView>(view) {
     override fun start() {
+        pageData?.let {
+            if (it.personalInfo.id > 0L) {
+                repository.getBankData(it.personalInfo.id)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ response ->
+                        view.showProgress(false)
+                        view.render(response)
+                    }, { error ->
+                        view.showProgress(false)
+                        view.showErrorMessage(error.localizedMessage)
+                    })
+                    .addTo(disposable)
+            }
+        }
+
         val submitObs = view.onSubmitClick().map { validateInput() != null }.share()
 
         submitObs
-            .filter { !it && pageData != null }
+            .filter { !it && pageData != null && pageData.personalInfo.id < 1 }
             .map {
                 repository.saveData(getData())
                     .subscribeOn(Schedulers.io())
@@ -30,10 +45,25 @@ class DPresenter @Inject constructor(
                 view.showErrorMessage(error.localizedMessage)
             })
             .addTo(disposable)
+        submitObs
+            .filter { !it && pageData != null && pageData.personalInfo.id > 0L }
+            .map {
+                repository.saveData(getData())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+            }.subscribe({ response ->
+                view.showProgress(false)
+                view.showToast("Data Updated")
+                view.backToHome()
+            }, { error ->
+                view.showProgress(false)
+                view.showErrorMessage(error.localizedMessage)
+            })
+            .addTo(disposable)
 
         submitObs
             .filter { it }
-            .subscribe { view.showError(validateInput()!!) }
+            .subscribe { view.showToast(validateInput()!!) }
             .addTo(disposable)
     }
 

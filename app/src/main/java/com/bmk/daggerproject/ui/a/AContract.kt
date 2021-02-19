@@ -5,7 +5,8 @@ import com.bmk.domain.DataResponse
 import io.reactivex.Observable
 
 interface AContract : BaseView {
-    fun onImageClick(): Observable<Unit>
+    fun onAddClick(): Observable<Unit>
+    fun onitemClick(): Observable<DataResponse>
     fun render(data: List<DataResponse>)
-    fun navigateToDetail()
+    fun navigateToDetail(id: Long)
 }
