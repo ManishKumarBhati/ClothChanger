@@ -33,22 +33,25 @@ class DPresenter @Inject constructor(
 
         submitObs
             .filter { !it && pageData != null && pageData.personalInfo.id < 1 }
-            .map {
+            .switchMap {
+                view.showProgress(true)
                 repository.saveData(getData())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
             }.subscribe({ response ->
                 view.showProgress(false)
-//                view.backToHome()
+                view.backToHome()
             }, { error ->
                 view.showProgress(false)
                 view.showErrorMessage(error.localizedMessage)
             })
             .addTo(disposable)
+
         submitObs
             .filter { !it && pageData != null && pageData.personalInfo.id > 0L }
-            .map {
-                repository.saveData(getData())
+            .switchMap {
+                view.showProgress(true)
+                repository.getModifyData(pageData!!.personalInfo.id, getData())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
             }.subscribe({ response ->

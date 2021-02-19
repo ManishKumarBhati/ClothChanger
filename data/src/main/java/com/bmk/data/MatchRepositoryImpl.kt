@@ -33,53 +33,34 @@ class MatchRepositoryImpl @Inject constructor(val db: LocalDataBase) : MatchRepo
                     image = it.image
                 )
             }
-        }/*.doOnNext{
-            db.matchDOA().insertAll(
-                InputData(
-                    id = Date().time,
-                    fName ="request.fName",
-                    lName ="request.lName",
-                    mob ="request.mob",
-                    gender ="request.gender",
-                    dob ="request.dob",
-                    empNo ="request.empNo",
-                    empName ="request.empName",
-                    empdesg ="request.empdesg",
-                    accountType ="request.accountType",
-                    exp ="request.exp",
-                    bankName ="request.bankName",
-                    branch ="request.branch",
-                    acNo ="request.acNo",
-                    ifscCode ="request.ifscCode",
-                    image ="request.image"
-                )
-            )
-        }*/
+        }
     }
 
-    override fun saveData(request: DataRequest): Single<Long> {
-        return Single.fromCallable {
-            db.matchDOA().insertAll(
-                InputData(
-                    id = Date().time,
-                    fName = request.fName,
-                    lName = request.lName,
-                    mob = request.mob,
-                    gender = request.gender,
-                    dob = request.dob,
-                    empNo = request.empNo,
-                    empName = request.empName,
-                    empdesg = request.empdesg,
-                    accountType = request.accountType,
-                    exp = request.exp,
-                    bankName = request.bankName,
-                    branch = request.branch,
-                    acNo = request.acNo,
-                    ifscCode = request.ifscCode,
-                    image = request.image
+    override fun saveData(request: DataRequest): Observable<Long> {
+        return Observable.just(1L)
+            .doOnNext {
+                db.matchDOA().insertAll(
+                    InputData(
+                        id = Date().time,
+                        fName = request.fName,
+                        lName = request.lName,
+                        mob = request.mob,
+                        gender = request.gender,
+                        dob = request.dob,
+                        empNo = request.empNo,
+                        empName = request.empName,
+                        empdesg = request.empdesg,
+                        accountType = request.accountType,
+                        exp = request.exp,
+                        bankName = request.bankName,
+                        branch = request.branch,
+                        acNo = request.acNo,
+                        ifscCode = request.ifscCode,
+                        image = request.image
+                    )
                 )
-            )
-        }
+
+            }
     }
 
     override fun getPersonalData(id: Long): Observable<PersonalData> {
@@ -118,7 +99,7 @@ class MatchRepositoryImpl @Inject constructor(val db: LocalDataBase) : MatchRepo
         }
     }
 
-    override fun getModifyData(id: Long, request: DataRequest): Single<Int> {
+    override fun getModifyData(id: Long, request: DataRequest): Observable<Int> {
         return db.matchDOA().updateData(
             id = id,
             fName = request.fName,
@@ -136,6 +117,6 @@ class MatchRepositoryImpl @Inject constructor(val db: LocalDataBase) : MatchRepo
             acNo = request.acNo,
             ifscCode = request.ifscCode,
             image = request.image
-        )
+        ).toObservable()
     }
 }
