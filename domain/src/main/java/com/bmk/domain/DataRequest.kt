@@ -72,3 +72,10 @@ data class BankData(
     @JvmField val ifscCode: String,
     @JvmField val image: String
 )
+
+data class UserData(
+    @JvmField val id: Long,
+    @JvmField val image: String,
+    @JvmField val topbottom: Int,
+    @JvmField val isFav: Boolean = false
+)

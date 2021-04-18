@@ -10,4 +10,6 @@ interface MatchRepository {
     fun getEmpData(id: Long): Observable<EmployeeData>
     fun getBankData(id: Long): Observable<BankData>
     fun getModifyData(id: Long, request: DataRequest): Observable<Int>
+    fun saveImage(url: String, id: Int): Observable<Long>
+    fun getImageList(): Observable<List<UserData>>
 }

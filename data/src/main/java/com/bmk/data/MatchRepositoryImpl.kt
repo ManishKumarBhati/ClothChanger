@@ -2,11 +2,10 @@ package com.bmk.data
 
 import com.bmk.data.db.InputData
 import com.bmk.data.db.LocalDataBase
+import com.bmk.data.db.UserClothData
 import com.bmk.domain.*
 import com.bmk.domain.DataResponse
 import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
@@ -61,6 +60,31 @@ class MatchRepositoryImpl @Inject constructor(val db: LocalDataBase) : MatchRepo
                 )
 
             }
+    }
+
+    override fun saveImage(url: String, id: Int): Observable<Long> {
+        return Observable.fromCallable {
+            db.matchDOA().insert(
+                UserClothData(
+                    id = Date().time,
+                    image = url,
+                    topbottom = id
+                )
+            )
+        }
+    }
+
+    override fun getImageList(): Observable<List<UserData>> {
+        return db.matchDOA().getUserData().map { res ->
+            res.map {
+                UserData(
+                    id = it.id,
+                    image = it.image,
+                    topbottom = it.topbottom,
+                    isFav = it.isFav
+                )
+            }
+        }
     }
 
     override fun getPersonalData(id: Long): Observable<PersonalData> {

@@ -17,7 +17,7 @@ buildscript {
 ext.versions = [
         "compileSdkVersion": 29,
         "targetSdkVersion" : 29,
-        "minSdkVersion" : 21,
+        "minSdkVersion"    : 21,
         "buildToolsVersion": "29.0.3",
         'okHttp'           : '3.12.3',
         'okIo'             : '1.17.4',
@@ -71,7 +71,7 @@ ext.deps = [
                 'android'        : "com.google.dagger:dagger-android-support:${versions.dagger}",
                 'androidCompiler': "com.google.dagger:dagger-android-processor:${versions.dagger}"],
         'timber'     : "com.jakewharton.timber:timber:${versions.timber}",
-        'viewPager'  : "androidx.viewpager2:viewpager2:1.0.0",
+        'viewPager'  : "androidx.viewpager2:viewpager2:1.0.0-alpha01",
         'groupie'    : [
                 'core'       : "com.xwray:groupie:${versions.groupie}",
                 'dataBinding': "com.xwray:groupie-databinding:${versions.groupie}"

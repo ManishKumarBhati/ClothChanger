@@ -1,22 +1,31 @@
 package com.bmk.daggerproject.ui.a
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentABinding
 import com.bmk.daggerproject.ui.b.BFragment
+import com.bmk.daggerproject.ui.d.DFragment
 import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.base.CommonFragment
-import com.bmk.domain.DataResponse
+import com.bmk.domain.UserData
 import com.jakewharton.rxbinding3.view.clicks
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
-import com.xwray.groupie.ViewHolder
 import io.reactivex.Observable
+import io.reactivex.rxkotlin.ofType
 import io.reactivex.subjects.PublishSubject
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 
@@ -24,25 +33,16 @@ class AFragment : CommonFragment(), AContract {
 
     @Inject
     lateinit var presenter: APresenter
-    lateinit var section: Section
     lateinit var binding: FragmentABinding
-    val subject = PublishSubject.create<DataResponse>()
+    val subject = PublishSubject.create<UIEvent>()
     override fun getLayout() = R.layout.fragment_a
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentABinding.bind(view)
         presenter.start()
-        initView()
     }
 
-    private fun initView() {
-        section = Section()
-        binding.rvPlayersList.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = GroupAdapter<ViewHolder>().apply { add(section) }
-        }
-    }
 
     override fun showProgress(show: Boolean) {
         binding.progressBar.isVisible = show
@@ -52,10 +52,32 @@ class AFragment : CommonFragment(), AContract {
         Log.e("Error", error)
     }
 
-    override fun render(data: List<DataResponse>) {
-        section.update(emptyList())
-        val item = data.map { AItem(it, subject) }
-        section.update(item)
+    override fun onAddTopClick(): Observable<Unit> {
+        return binding.fabTop.clicks()
+    }
+
+    override fun onAddBottomClick(): Observable<Unit> {
+        return binding.fabBottom.clicks()
+    }
+
+    override fun onShuffleClickCLick(): Observable<Unit> {
+        return binding.fabShuffle.clicks()
+    }
+
+    override fun onAddImg(): Observable<UIEvent.AddImage> {
+        return subject.ofType()
+    }
+
+    override fun render(data: List<UserData>) {
+        val top = data.filter { it.topbottom == AContract.TOP }
+        val bottom = data.filter { it.topbottom == AContract.BOTTOM }
+
+        binding.vp1.adapter = ViewPagerAdapter(requireContext(), top.shuffled())
+        binding.vp2.adapter = ViewPagerAdapter(requireContext(), bottom.shuffled())
+    }
+
+    override fun renderImageSave(data: Long) {
+        Log.d("BMK", data.toString())
     }
 
     override fun navigateToDetail(id: Long) {
@@ -77,14 +99,54 @@ class AFragment : CommonFragment(), AContract {
         }
     }
 
-    override fun onAddClick(): Observable<Unit> {
-        return binding.fabAdd.clicks()
+
+    override fun openCamera(id: Int) {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED
+        ) requestPermissions(
+            arrayOf(Manifest.permission.CAMERA),
+            DFragment.REQUEST_CAPTURE_IMAGE
+        ) else startCamera(id)
     }
 
-    override fun onitemClick(): Observable<DataResponse> {
-        return subject
+    fun startCamera(id: Int) {
+        val pictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        activity?.let {
+
+            if (pictureIntent.resolveActivity(it.packageManager) != null) {
+                //Create a file to store the image
+                var photoFile: File? = null
+                try {
+                    photoFile = createImageFile(id)
+                } catch (ex: IOException) {
+                }
+                if (photoFile != null) {
+                    val photoURI =
+                        FileProvider.getUriForFile(
+                            requireContext(),
+                            "com.bmk.daggerproject.provider",
+                            photoFile
+                        )
+                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(pictureIntent, DFragment.REQUEST_CAPTURE_IMAGE)
+                }
+            }
+        }
     }
 
+    private fun createImageFile(id: Int): File? {
+        val timeStamp: String =
+            SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val imageFileName = "IMG_" + timeStamp + "_"
+        val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val image: File = File.createTempFile(
+            imageFileName,  /* prefix */
+            ".jpg",  /* suffix */
+            storageDir /* directory */
+        )
+        subject.onNext(UIEvent.AddImage(image.absolutePath, id))
+        return image
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
