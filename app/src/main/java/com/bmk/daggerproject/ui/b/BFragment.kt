@@ -92,7 +92,7 @@ class BFragment : CommonFragment(), BView {
                         MainActivity.AnimType.FADE.getAnimPair().first,
                         MainActivity.AnimType.FADE.getAnimPair().second
                     )
-                    .add(
+                    .replace(
                         R.id.frame,
                         CFragment.newInstance(data),
                         CFragment.TAG

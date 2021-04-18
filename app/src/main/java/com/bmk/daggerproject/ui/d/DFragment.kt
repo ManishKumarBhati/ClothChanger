@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentManager
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentDBinding
 import com.bmk.daggerproject.ui.a.AFragment
@@ -51,6 +52,7 @@ class DFragment : CommonFragment(), DView {
             requireContext(),
             BranchList
         )
+        binding.tvImage.setOnClickListener { openCamera() }
         binding.spnrBranchName.adapter = empExpAdapter
     }
 
@@ -140,15 +142,20 @@ class DFragment : CommonFragment(), DView {
     }
 
     override fun backToHome() {
-        activity?.supportFragmentManager?.beginTransaction()
+        val fm = activity?.supportFragmentManager
+
+        fm?.beginTransaction()
             ?.setCustomAnimations(
                 MainActivity.AnimType.FADE.getAnimPair().first,
                 MainActivity.AnimType.FADE.getAnimPair().second
-            )?.add(
+            )?.replace(
                 R.id.frame,
                 AFragment.newInstance(),
                 AFragment.TAG
             )?.commit()
+        fm?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        fm?.popBackStack()
+
     }
 
     override fun showProgress(show: Boolean) {
