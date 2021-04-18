@@ -38,13 +38,3 @@ fun Context.showDatePicker(
 }
 
 val dateFormat: DateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
-
-@JvmOverloads
-fun <T> getDefaultAdapter(
-    context: Context,
-    data: List<T> = mutableListOf()
-): ArrayAdapter<T> {
-    val adapter = ArrayAdapter<T>(context, R.layout.spinner_dropdown_item, data)
-    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-    return adapter
-}

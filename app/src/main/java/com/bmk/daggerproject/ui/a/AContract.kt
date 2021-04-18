@@ -11,10 +11,10 @@ interface AContract : BaseView {
     fun onAddImg(): Observable<UIEvent.AddImage>
     fun render(data: List<UserData>)
     fun renderImageSave(data: Long)
-    fun navigateToDetail(id: Long)
     fun openCamera(id: Int)
 
     companion object {
+        const val REQUEST_CAPTURE_IMAGE = 100
         const val TOP = 1
         const val BOTTOM = 2
     }

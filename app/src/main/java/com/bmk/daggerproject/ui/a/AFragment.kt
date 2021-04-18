@@ -13,8 +13,6 @@ import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import com.bmk.daggerproject.R
 import com.bmk.daggerproject.databinding.FragmentABinding
-import com.bmk.daggerproject.ui.b.BFragment
-import com.bmk.daggerproject.ui.d.DFragment
 import com.bmk.daggerproject.ui.main.MainActivity
 import com.bmk.daggerproject.util.base.CommonFragment
 import com.bmk.domain.UserData
@@ -80,32 +78,12 @@ class AFragment : CommonFragment(), AContract {
         Log.d("BMK", data.toString())
     }
 
-    override fun navigateToDetail(id: Long) {
-        activity?.let {
-            if (it.supportFragmentManager.findFragmentByTag(BFragment.TAG) == null) {
-                it.supportFragmentManager.beginTransaction()
-                    .addToBackStack(null)
-                    .setCustomAnimations(
-                        MainActivity.AnimType.FADE.getAnimPair().first,
-                        MainActivity.AnimType.FADE.getAnimPair().second
-                    )
-                    .replace(
-                        R.id.frame,
-                        BFragment.newInstance(id),
-                        BFragment.TAG
-                    )
-                    .commit()
-            }
-        }
-    }
-
-
     override fun openCamera(id: Int) {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
             != PackageManager.PERMISSION_GRANTED
         ) requestPermissions(
             arrayOf(Manifest.permission.CAMERA),
-            DFragment.REQUEST_CAPTURE_IMAGE
+            AContract.REQUEST_CAPTURE_IMAGE
         ) else startCamera(id)
     }
 
@@ -128,7 +106,7 @@ class AFragment : CommonFragment(), AContract {
                             photoFile
                         )
                     pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(pictureIntent, DFragment.REQUEST_CAPTURE_IMAGE)
+                    startActivityForResult(pictureIntent, AContract.REQUEST_CAPTURE_IMAGE)
                 }
             }
         }
