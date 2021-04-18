@@ -93,7 +93,7 @@ ext.deps = [
                 'platform'    : "com.jakewharton.rxbinding3:rxbinding:${versions.rxBinding}",
                 'core'        : "com.jakewharton.rxbinding3:rxbinding-core:${versions.rxBinding}",
                 'swiperefresh': "com.jakewharton.rxbinding3:rxbinding-swiperefreshlayout:${versions.rxBinding}",
-                'viewpager'   : "com.jakewharton.rxbinding3:rxbinding-viewpager:${versions.rxBinding}",
+                'viewpager'   : "com.jakewharton.rxbinding3:rxbinding-viewpager2:${versions.rxBinding}",
                 'appcompat'   : "com.jakewharton.rxbinding3:rxbinding-appcompat:${versions.rxBinding}",
                 'material'    : "com.jakewharton.rxbinding3:rxbinding-material:${versions.rxBinding}"],
         'okhttp'     : [

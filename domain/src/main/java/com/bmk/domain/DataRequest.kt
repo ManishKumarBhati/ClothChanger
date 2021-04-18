@@ -76,6 +76,5 @@ data class BankData(
 data class UserData(
     @JvmField val id: Long,
     @JvmField val image: String,
-    @JvmField val topbottom: Int,
-    @JvmField val isFav: Boolean = false
+    @JvmField val topbottom: Int
 )

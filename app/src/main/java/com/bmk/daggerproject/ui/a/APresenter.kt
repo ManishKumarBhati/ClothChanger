@@ -39,7 +39,6 @@ class APresenter @Inject constructor(
         }).addTo(disposable)
 
 
-        view
         Observable.merge(
             view.onAddTopClick().map { AContract.TOP },
             view.onAddBottomClick().map { AContract.BOTTOM })
@@ -47,19 +46,56 @@ class APresenter @Inject constructor(
             .addTo(disposable)
 
 
-        view.onAddImg().switchMap {
-            repository.saveImage(it.url, it.position).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-        }
+        view.onAddImg()
+            .switchMap {
+                repository.saveImage(it.url, it.position).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+            }
             .subscribe({ response ->
                 view.showProgress(false)
+                view.renderImageSave(response)
             }, { error ->
                 view.showProgress(false)
                 view.showErrorMessage(error.localizedMessage)
             }).addTo(disposable)
 
-//        Observable.merge(view.onAddTopClick().map { -1L }, view.onitemClick().map { it.id })
-//            .subscribe(view::navigateToDetail)
-//            .addTo(disposable)
+        view.onScroll()
+            .filter {
+                it.top != -1L && it.bottom != -1L
+            }.switchMap {
+                repository.getFavData(it.top, it.bottom).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+            }
+            .subscribe({ response ->
+                view.showProgress(false)
+                view.renderFav(response)
+            }, { error ->
+                view.showProgress(false)
+                view.showErrorMessage(error.localizedMessage)
+            }).addTo(disposable)
+
+        view.onChkChange()
+            .skip(1)
+            .distinctUntilChanged()
+            .map { view.getData() to it }
+            .filter {
+                it.first.first != -1L && it.first.second != -1L
+            }
+            .switchMap { (id, isChecked) ->
+                repository.getCount(id)
+                    .flatMap {
+                        if (it > 0) repository.updateFavData(id, isChecked)
+                        else repository.saveFav(id, isChecked)
+                    }
+                    .distinctUntilChanged()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+            }.subscribe({ response ->
+                view.showProgress(false)
+                view.handleCheckChange()
+            }, { error ->
+                view.showProgress(false)
+                view.showErrorMessage(error.localizedMessage)
+            }).addTo(disposable)
     }
 }
